@@ -6,7 +6,7 @@
     "author": "",
     "license": "GPL-3.0",
     
-    "main": "plugin_entry.py",
+    "main": "plugin_entry.so",
     "capability": [
         "inotify-lookup"
     ],

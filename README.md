@@ -1,31 +1,24 @@
 # Plugin Development Norm
 
-Design Pricinple, **PCS**, Platform\*Category\*Software
+> For Virtual Domain Manager v1.0.0
 
-## API and Wrapper
+### SRC API
 
-A plugin should address its **category** and implement the API. The framework will call plugin through APIs with some environment parameters. Here follows the **API table**:
+The VDM framework will load plugin, and execute it via `SRC API` defined below. Specifically, the working directory will be a random temporary directory, and the execution will be in separated thread.
 
-| API NAME  |               DESCRIPTION                |
-| :-------: | :--------------------------------------: |
-|   init    | Execute once the plugin is loaded, import your modules and setup environment here. |
-|  onSave   | Execute when to **save** current domain  |
-| onResume  | Execute when to **restore** current domain |
-|  onExit   | Execute when to **close** current domain |
-| onTrigger | Execute when user manually call this plugin |
-| onDaemon  | Executed in manager-daemon (not to implement yet) |
-
-For **different categories** of plugin, diffenrent wrapped python modules and built-in functions are provided. Here follows the **category table**:
-
-| CATEGORY | WRAPPED FUNCTION |
-| :------: | :--------------: |
-|  System  |  (placeholder)   |
-|  Editor  |  (placeholder)   |
-| Browser  |  (placeholder)   |
+|             API NAME              |                    DESCRIPTION                     |
+| :-------------------------------: | :------------------------------------------------: |
+|        `onStart() -> uint`        |         Execute when the plugin is loaded          |
+|        `onStop() -> uint`         |         Execute when the plugin is exited          |
+|  `onSave(stat_file:str) -> uint`  |      Execute to save status into `stat_file`       |
+| `onResume(stat_file:str) -> uint` |     Execute to resume status from `stat_file`      |
+|        `onClose() -> uint`        |          Execute to close the application          |
+|       `onDaemon() -> None`        | (Optional) Execute as daemon service in VDM daemon |
 
 
+### Develop Procedure
 
-## Develop Procedure
-
-1. workspace init: use `npm init` for convinient, or copy the `package.json` and modify.
-2. (todo)
+1. **Repo Init**: use `npm init` for convenience, or copy and modify an existing `package.json`.
+2. **Dependency Claim**: the capability dependency should be firstly described in `package.json` file, then the safety of RPC calling of capacity function in your plugin is promised. For other dependencies, please include them in your repo or install via `pre-install` script in `package.json`.
+3. **Plugin Test**: use `zip` to archive your plugin repo firstly, and use `pyvdm plugin install <*.zip file>` to install; then, use `pyvdm plugin run <func>` to apply unit test.
+4. **Plugin Publish**: (not implemented)

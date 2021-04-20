@@ -8,15 +8,16 @@ from pyvdm.interface import RPCWrapper
 class PluginTemplate(SRC_API):
 
     def onStart(self):
-        RPCWrapper.connect()
-        self.iLHandler = RPCWrapper.getCapability('inotify_lookup')
+        self.rpc = RPCWrapper.RPCWrapper()
+        self.rpc.connect()
+        self.iLHandler = self.rpc.getCapability('inotify_lookup')
         self.iLHandler.register('code')
         return 0
 
     def onStop(self):
         self.iLHandler.unregister('code')
         # self.iLHandler.drop() #(Optional) auto drop when disconnect
-        RPCWrapper.disconnect()
+        self.rpc.disconnect()
         return 0
 
     def onSave(self, stat_file):

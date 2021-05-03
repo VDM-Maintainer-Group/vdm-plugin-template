@@ -3,26 +3,26 @@
 '''
 
 from pyvdm.interface import SRC_API
-from pyvdm.interface import RPCWrapper
+from pyvdm.interface import CapabilityLibrary
 
 class PluginTemplate(SRC_API):
 
     def onStart(self):
-        self.rpc = RPCWrapper.RPCWrapper()
-        self.rpc.connect()
-        self.iLHandler = self.rpc.getCapability('inotify_lookup')
-        self.iLHandler.register('code')
+        self.lib = CapabilityLibrary.CapabilityLibrary()
+        self.lib.connect()
+        self.iLHandle = self.lib.getCapability('inotify_lookup')
+        self.iLHandle.register('code')
         return 0
 
     def onStop(self):
-        self.iLHandler.unregister('code')
-        # self.iLHandler.drop() #(Optional) auto drop when disconnect
-        self.rpc.disconnect()
+        self.iLHandle.unregister('code')
+        # self.iLHandle.drop() #(Optional) auto drop when disconnect
+        self.lib.disconnect()
         return 0
 
     def onSave(self, stat_file):
         with open(stat_file, 'w'):
-            self.iLHandler.dump('code')
+            result = self.iLHandle.dump('code')
             # save the status
             pass
         return 0

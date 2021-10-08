@@ -8,9 +8,10 @@ from pyvdm.interface import CapabilityLibrary
 class PluginTemplate(SRC_API):
 
     def onStart(self):
-        self.lib = CapabilityLibrary.CapabilityLibrary()
-        self.lib.connect()
-        self.iLHandle = self.lib.getCapability('inotify_lookup')
+        # self.lib = CapabilityLibrary.CapabilityLibrary()
+        # self.lib.connect()
+        # self.iLHandle = self.lib.getCapability('inotify_lookup')
+        self.iLHandle = CapabilityLibrary.CapabilityHandle('inotify_lookup')
         self.iLHandle.register('code')
         return 0
 
